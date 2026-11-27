@@ -1,0 +1,14 @@
+[build]
+  base = "frontend"
+  # Install from the lockfile first; --include=dev keeps devDependencies even when NODE_ENV=production
+  command = "npm ci --include=dev && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Client-side routing (React Router BrowserRouter): serve index.html for unknown paths
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
