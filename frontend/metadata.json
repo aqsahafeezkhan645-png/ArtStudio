@@ -1,0 +1,6 @@
+{
+  "name": "ArtStudio",
+  "description": "Purple-Themed Handmade and Customized Cards E-Commerce Boutique",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

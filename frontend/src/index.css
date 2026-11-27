@@ -1,0 +1,214 @@
+
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Default Light Pink Theme */
+    --theme-primary: #DB8FA5;
+    --theme-secondary: #B85C7A;
+    --theme-accent: #F2B9CC;
+    --theme-light: #F8DCE6;
+    --theme-soft: #FCE7EF;
+    --theme-background: #FFF5F8;
+    --theme-text: #593D49;
+    --theme-muted: #927582;
+
+    /* Backward compatibility */
+    --primary-purple: var(--theme-primary);
+    --deep-purple: var(--theme-secondary);
+    --lavender: var(--theme-accent);
+    --light-lavender: var(--theme-light);
+    --soft-lilac: var(--theme-soft);
+    --pale-bg: var(--theme-background);
+    --dark-text: var(--theme-text);
+    --muted-text: var(--theme-muted);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--theme-background);
+    color: var(--theme-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-handwritten {
+    font-family: 'Caveat', cursive;
+  }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-accent);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary);
+}
+
+/* =========================================
+   DYNAMIC THEME COLORS
+   Applies selected colors across the website
+========================================= */
+
+/* Text colors */
+[class~="text-[#7041A6]"] {
+  color: var(--theme-secondary) !important;
+}
+
+[class~="text-[#9B72CF]"] {
+  color: var(--theme-primary) !important;
+}
+
+[class~="text-[#40334F]"] {
+  color: var(--theme-text) !important;
+}
+
+[class~="text-[#81758F]"] {
+  color: var(--theme-muted) !important;
+}
+
+/* Background colors */
+[class~="bg-[#7041A6]"] {
+  background-color: var(--theme-secondary) !important;
+}
+
+[class~="bg-[#9B72CF]"] {
+  background-color: var(--theme-primary) !important;
+}
+
+[class~="bg-[#F3ECFA]"] {
+  background-color: var(--theme-soft) !important;
+}
+
+[class~="bg-[#FAF7FD]"] {
+  background-color: var(--theme-background) !important;
+}
+
+/* Border colors */
+[class~="border-[#E9DDF7]"] {
+  border-color: var(--theme-light) !important;
+}
+
+[class~="border-[#C8A2E8]"] {
+  border-color: var(--theme-accent) !important;
+}
+
+/* Hover backgrounds */
+[class~="hover:bg-[#9B72CF]"]:hover {
+  background-color: var(--theme-primary) !important;
+}
+
+[class~="hover:bg-[#7041A6]"]:hover {
+  background-color: var(--theme-secondary) !important;
+}
+
+/* Gradient colors */
+[class~="from-[#7041A6]"] {
+  --tw-gradient-from: var(--theme-secondary) var(--tw-gradient-from-position);
+}
+
+[class~="via-[#9B72CF]"] {
+  --tw-gradient-via: var(--theme-primary) var(--tw-gradient-via-position);
+}
+
+[class~="to-[#C8A2E8]"] {
+  --tw-gradient-to: var(--theme-accent) var(--tw-gradient-to-position);
+}
+
+/* =========================================
+   ARTSTUDIO GLOBAL THEME HOVER EFFECT
+========================================= */
+
+:root {
+  --theme-hover-shadow:
+    0 8px 24px color-mix(
+      in srgb,
+      var(--theme-primary, #7041A6) 25%,
+      transparent
+    );
+
+  --theme-hover-shadow-strong:
+    0 12px 30px color-mix(
+      in srgb,
+      var(--theme-primary, #7041A6) 35%,
+      transparent
+    );
+}
+
+/* Smooth transitions */
+
+a,
+button,
+input,
+select,
+textarea,
+[role="button"],
+article,
+.card,
+[class*="card"] {
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Links and buttons */
+
+a:hover,
+button:hover,
+[role="button"]:hover {
+  box-shadow: var(--theme-hover-shadow);
+}
+
+/* Cards and product containers */
+
+article:hover,
+.card:hover,
+[class*="card"]:hover {
+  box-shadow: var(--theme-hover-shadow-strong);
+}
+
+/* Input focus */
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--theme-primary) !important;
+
+  box-shadow:
+    0 0 0 3px color-mix(
+      in srgb,
+      var(--theme-primary) 18%,
+      transparent
+    );
+}
+
+/* Keyboard accessibility */
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--theme-primary);
+  outline-offset: 3px;
+}
+
+/* Smooth hover for images */
+
+img {
+  transition: box-shadow 0.3s ease;
+}
