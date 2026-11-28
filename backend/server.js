@@ -11,7 +11,7 @@ import storeSettingRoutes from "./routes/storeSetting.js";
 import productRoutes from "./routes/productRoutes.js";
 import siteContentRoutes from "./routes/siteContent.js";
 import authRoutes from "./routes/authRoutes.js";
-import contactRoutes from "./routes/contact.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
