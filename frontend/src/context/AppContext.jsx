@@ -170,6 +170,96 @@ export function AppProvider({ children }) {
   }, []);
 
   // ==========================================
+  // LOAD REAL ADMIN DASHBOARD DATA FROM MONGODB
+  // ==========================================
+
+  const refreshAdminDashboard = async () => {
+    if (user?.role !== 'admin') {
+      setOrders([]);
+      setCustomerCount(0);
+      setOrdersLoading(false);
+      return { success: false, message: 'Admin access is required.' };
+    }
+
+    setOrdersLoading(true);
+
+    try {
+      const [ordersResult, customersResult] = await Promise.allSettled([
+        fetch(ORDERS_API_URL, {
+          method: 'GET',
+          credentials: 'include'
+        }),
+        fetch(`${AUTH_API_URL}/admin/customer-count`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+      ]);
+
+      let hasError = false;
+
+      if (ordersResult.status === 'fulfilled') {
+        const response = ordersResult.value;
+        const data = await response.json();
+
+        if (response.ok && data.success && Array.isArray(data.orders)) {
+          setOrders(data.orders.map(order => ({
+            ...order,
+            id: order.orderNumber || order._id,
+            date: order.createdAt
+              ? new Date(order.createdAt).toISOString().slice(0, 10)
+              : '',
+            items: Array.isArray(order.items) ? order.items : [],
+            shippingAddress: order.shippingDetails?.address || ''
+          })));
+        } else {
+          hasError = true;
+          console.error('Orders loading error:', data.message || 'Invalid orders response.');
+        }
+      } else {
+        hasError = true;
+        console.error('Orders request failed:', ordersResult.reason);
+      }
+
+      if (customersResult.status === 'fulfilled') {
+        const response = customersResult.value;
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          setCustomerCount(Number(data.customerCount || 0));
+        } else {
+          hasError = true;
+          console.error('Customer count error:', data.message || 'Invalid customer count response.');
+        }
+      } else {
+        hasError = true;
+        console.error('Customer count request failed:', customersResult.reason);
+      }
+
+      return {
+        success: !hasError,
+        message: hasError ? 'Some dashboard information could not be loaded.' : ''
+      };
+    } catch (error) {
+      console.error('Admin dashboard loading error:', error);
+      return { success: false, message: error.message };
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (user?.role === 'admin') {
+      refreshAdminDashboard();
+    } else {
+      setOrders([]);
+      setCustomerCount(0);
+      setOrdersLoading(false);
+    }
+  }, [user?.role, authLoading]);
+
+  // ==========================================
   // CART
   // ==========================================
 
@@ -186,48 +276,25 @@ export function AppProvider({ children }) {
   // WISHLIST
   // ==========================================
 
+  // A new browser/customer starts with an empty wishlist.
   const [wishlist, setWishlist] = useState(() => {
     try {
       const saved = localStorage.getItem('artstudio_wishlist');
-      return saved ? JSON.parse(saved) : ['card-1', 'card-2'];
-    } catch {
-      return ['card-1', 'card-2'];
-    }
-  });
-
-  // ==========================================
-  // ORDERS
-  // ==========================================
-
-  const [orders, setOrders] = useState(() => {
-    try {
-      const saved = localStorage.getItem('artstudio_orders');
-
-      return saved ? JSON.parse(saved) : [
-        {
-          id: 'ART-98421',
-          date: '2026-11-04',
-          items: [
-            {
-              id: 'card-1',
-              name: 'Lavender Whisper Pressed Floral Card',
-              price: 799,
-              quantity: 2,
-              image: '/src/assets/images/birthday_card_craft_1794160682865.jpg'
-            }
-          ],
-          subtotal: 1598,
-          deliveryFee: 250,
-          total: 1848,
-          paymentMethod: 'Cash on Delivery',
-          status: 'Shipped',
-          shippingAddress: 'House #42, Street 7, Lavender Heights, Lahore'
-        }
-      ];
+      return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
+
+  // ==========================================
+  // ORDERS AND ADMIN DASHBOARD DATA
+  // Orders and customer totals are loaded from MongoDB,
+  // not from demo data or browser localStorage.
+  // ==========================================
+
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [customerCount, setCustomerCount] = useState(0);
 
   // ==========================================
   // SAVED CUSTOM CARDS
@@ -253,10 +320,6 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('artstudio_wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
-
-  useEffect(() => {
-    localStorage.setItem('artstudio_orders', JSON.stringify(orders));
-  }, [orders]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -1496,6 +1559,9 @@ export function AppProvider({ children }) {
         user,
         authLoading,
         orders,
+        ordersLoading,
+        customerCount,
+        refreshAdminDashboard,
         savedCustomCards,
         toast,
 

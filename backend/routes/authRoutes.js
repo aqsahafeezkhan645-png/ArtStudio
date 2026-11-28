@@ -1,4 +1,3 @@
-
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -7,7 +6,7 @@ import nodemailer from "nodemailer";
 import rateLimit from "express-rate-limit";
 
 import User from "../models/User.js";
-import { protect } from "../middleware/authmiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -762,6 +761,37 @@ router.post("/logout", (req, res) => {
     success: true,
     message: "Logged out successfully."
   });
+});
+
+// =====================================
+// ADMIN - GET REGISTERED CUSTOMER COUNT
+// =====================================
+
+router.get("/admin/customer-count", protect, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Only administrators can view customer statistics."
+      });
+    }
+
+    const customerCount = await User.countDocuments({
+      role: "customer"
+    });
+
+    return res.status(200).json({
+      success: true,
+      customerCount
+    });
+  } catch (error) {
+    console.error("Customer count error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to load customer count."
+    });
+  }
 });
 
 export default router;

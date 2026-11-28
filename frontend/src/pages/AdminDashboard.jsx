@@ -45,6 +45,7 @@ export default function AdminDashboard() {
     products,
     productsLoading,
     orders,
+    customerCount = 0,
     addProduct,
     updateProduct,
     deleteProduct,
@@ -290,14 +291,18 @@ export default function AdminDashboard() {
   };
 
   // Dashboard metrics
-  const totalRevenue = orders.reduce(
-    (total, order) => total + Number(order.total || 0),
-    0
-  );
+  // Statistics are calculated from real database data.
+  // Cancelled orders are not included in revenue.
+  const totalRevenue = orders
+    .filter(order => order.status !== 'Cancelled')
+    .reduce(
+      (total, order) => total + Number(order.total || 0),
+      0
+    );
 
   const totalOrdersCount = orders.length;
   const totalProductsCount = products.length;
-  const totalCustomersCount = 14 + orders.length;
+  const totalCustomersCount = Number(customerCount) || 0;
 
   // Reset product form
   const resetProductForm = () => {
