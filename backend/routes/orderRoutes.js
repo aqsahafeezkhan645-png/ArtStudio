@@ -9,7 +9,7 @@ import StockReservation from "../models/StockReservation.js";
 import {
   protect,
   adminOnly
-} from "../middleware/authmiddleware.js";
+} from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

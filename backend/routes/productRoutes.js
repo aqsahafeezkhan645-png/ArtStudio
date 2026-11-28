@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import StockReservation from "../models/StockReservation.js";
 import cloudinary from "../config/cloudinary.js";
-import { protect, adminOnly } from "../middleware/authmiddleware.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
