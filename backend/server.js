@@ -22,6 +22,8 @@ const app = express();
 
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  process.env.FRONTEND_URL,
+  "https://art-studio-psi-nine.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173"
 ].filter(Boolean);
@@ -33,9 +35,16 @@ app.use(
         return callback(null, true);
       }
 
+      console.error("Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With"
+    ]
   })
 );
 
@@ -77,15 +86,21 @@ async function connectDB() {
   await connectionPromise;
 }
 
-// Ensure database is connected before API requests
+// ========================================
+// DATABASE CONNECTION MIDDLEWARE
+// ========================================
+
 app.use(async (req, res, next) => {
   try {
     await connectDB();
     next();
   } catch (error) {
-    console.error("MongoDB connection error:", error.message);
+    console.error(
+      "MongoDB connection error:",
+      error.message
+    );
 
-    res.status(503).json({
+    return res.status(503).json({
       success: false,
       message: "Database connection unavailable."
     });
@@ -97,7 +112,7 @@ app.use(async (req, res, next) => {
 // ========================================
 
 app.get("/", (req, res) => {
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: "ArtStudio API is running!"
   });
@@ -119,7 +134,7 @@ app.use("/api/orders", orderRoutes);
 // ========================================
 
 app.use((req, res) => {
-  res.status(404).json({
+  return res.status(404).json({
     success: false,
     message: "API route not found."
   });
@@ -136,7 +151,7 @@ app.use((error, req, res, next) => {
     return next(error);
   }
 
-  res.status(500).json({
+  return res.status(500).json({
     success: false,
     message: "An unexpected server error occurred."
   });
@@ -150,7 +165,9 @@ if (process.env.VERCEL !== "1") {
   const PORT = process.env.PORT || 5000;
 
   app.listen(PORT, () => {
-    console.log(`ArtStudio backend running on port ${PORT}`);
+    console.log(
+      `ArtStudio backend running on port ${PORT}`
+    );
   });
 }
 
