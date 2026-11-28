@@ -2,7 +2,7 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import rateLimit from "express-rate-limit";
-import StoreSetting from "../models/StoreSetting.js";
+import StoreSetting from "../models/storeSetting.js";
 
 const router = express.Router();
 

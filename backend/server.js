@@ -16,6 +16,7 @@ import productRoutes from "./routes/productRoutes.js";
 import siteContentRoutes from "./routes/siteContent.js";
 import authRoutes from "./routes/authRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -50,12 +51,18 @@ app.get("/", (req, res) => {
 // ========================================
 
 app.use("/api/auth", authRoutes);
+
 app.use("/api/store-settings", storeSettingRoutes);
+
 app.use("/api/products", productRoutes);
+
 app.use("/api/site-content", siteContentRoutes);
 
 // CONTACT US EMAIL API
 app.use("/api/contact", contactRoutes);
+
+// ORDERS API
+app.use("/api/orders", orderRoutes);
 
 // ========================================
 // NOT FOUND ROUTE
@@ -128,6 +135,10 @@ async function startServer() {
 
       console.log(
         `Contact API: http://localhost:${PORT}/api/contact`
+      );
+
+      console.log(
+        `Orders API: http://localhost:${PORT}/api/orders`
       );
     });
 
