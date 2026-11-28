@@ -16,7 +16,7 @@ import {
   Instagram
 } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api/site-content';
+const API_URL = 'https://art-studio-l9mr.vercel.app/api/site-content';
 
 const DEFAULT_CATEGORIES = [
   {

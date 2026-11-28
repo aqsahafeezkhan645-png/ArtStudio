@@ -11,9 +11,9 @@ import { INITIAL_CARDS } from '../data/cardsData.js';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-  const PRODUCTS_API_URL = 'http://localhost:5000/api/products';
-  const AUTH_API_URL = 'http://localhost:5000/api/auth';
-  const ORDERS_API_URL = 'http://localhost:5000/api/orders';
+  const PRODUCTS_API_URL = 'https://art-studio-l9mr.vercel.app/api/products';
+  const AUTH_API_URL = 'https://art-studio-l9mr.vercel.app/api/auth';
+  const ORDERS_API_URL = 'https://art-studio-l9mr.vercel.app/api/orders';
 
   // ==========================================
   // PRODUCTS

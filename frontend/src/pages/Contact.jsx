@@ -14,8 +14,8 @@ import {
   ChevronUp
 } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api/store-settings';
-const CONTACT_API_URL = 'http://localhost:5000/api/contact';
+const API_URL = 'https://art-studio-l9mr.vercel.app/api/store-settings';
+const CONTACT_API_URL = 'https://art-studio-l9mr.vercel.app/api/contact';
 
 export default function Contact() {
   const { showToast } = useApp();

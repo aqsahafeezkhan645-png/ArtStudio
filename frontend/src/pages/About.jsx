@@ -9,7 +9,7 @@ import {
   ArrowRight
 } from "lucide-react";
 
-const API = "http://localhost:5000/api/site-content";
+const API = "https://art-studio-l9mr.vercel.app/api/site-content";
 
 const DEFAULT_ABOUT = {
   storyEyebrow: "Our Humble Beginning",

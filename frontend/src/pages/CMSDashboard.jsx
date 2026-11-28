@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Save, RefreshCw, Upload } from "lucide-react";
 
-const API = "http://localhost:5000/api/site-content";
+const API = "https://art-studio-l9mr.vercel.app/api/site-content";
 
 // Upload directly to Cloudinary and report real upload progress.
 function uploadDirectlyToCloudinary({

@@ -22,7 +22,7 @@ import {
   saveTheme
 } from '../utils/theme.js';
 
-const API_URL = 'http://localhost:5000/api/store-settings';
+const API_URL = 'https://art-studio-l9mr.vercel.app/api/store-settings';
 
 const DEFAULT_FORM = {
   name: '',
