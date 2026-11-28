@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import multer from "multer";
 import SiteContent from "../models/SiteContent.js";
 import cloudinary from "../config/cloudinary.js";
-import { protect, adminOnly } from "../middleware/authmiddleware.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -17,27 +17,23 @@ const ALLOWED_SECTIONS = [
   "pages"
 ];
 
-// Allowed single-image CMS fields.
 const ALLOWED_IMAGE_FIELDS = {
   header: ["logo"],
   home: ["heroImage"],
   about: ["image", "storyImage"]
 };
 
-// Allowed Homepage image arrays.
 const HOME_ARRAY_IMAGE_LIMITS = {
   categories: 6,
   instagramGallery: 4
 };
 
-// Allowed About page image arrays.
 const ABOUT_ARRAY_IMAGE_LIMITS = {
   galleryImages: 3
 };
 
 const CMS_IMAGE_FOLDER = "artstudio/site-content";
 
-// Multer configuration.
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -60,14 +56,11 @@ const upload = multer({
   }
 });
 
-// Check whether an image destination is allowed.
 function isAllowedImageDestination(section, field, index) {
-  // Single image fields.
   if (ALLOWED_IMAGE_FIELDS[section]?.includes(field)) {
     return true;
   }
 
-  // Homepage image arrays.
   if (
     section === "home" &&
     Object.prototype.hasOwnProperty.call(
@@ -82,7 +75,6 @@ function isAllowedImageDestination(section, field, index) {
     );
   }
 
-  // About page image arrays.
   if (
     section === "about" &&
     Object.prototype.hasOwnProperty.call(
@@ -100,7 +92,6 @@ function isAllowedImageDestination(section, field, index) {
   return false;
 }
 
-// Upload buffer to Cloudinary.
 function uploadToCloudinary(buffer) {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -134,7 +125,6 @@ router.get("/", async (req, res) => {
       success: true,
       content: content.toObject()
     });
-
   } catch (error) {
     console.error("CMS fetch error:", error);
 
@@ -154,9 +144,7 @@ router.post(
     try {
       const { section, field, index } = req.body || {};
 
-      if (
-        !isAllowedImageDestination(section, field, index)
-      ) {
+      if (!isAllowedImageDestination(section, field, index)) {
         return res.status(400).json({
           success: false,
           message: "Invalid CMS image destination."
@@ -207,7 +195,6 @@ router.post(
         publicId,
         signature
       });
-
     } catch (error) {
       console.error("Cloudinary signature error:", error);
 
@@ -243,9 +230,7 @@ router.post(
         });
       }
 
-      const result = await uploadToCloudinary(
-        req.file.buffer
-      );
+      const result = await uploadToCloudinary(req.file.buffer);
 
       return res.status(200).json({
         success: true,
@@ -253,14 +238,12 @@ router.post(
         imageUrl: result.secure_url,
         publicId: result.public_id
       });
-
     } catch (error) {
       console.error("CMS image upload error:", error);
 
       return res.status(500).json({
         success: false,
-        message:
-          error.message || "Unable to upload image."
+        message: error.message || "Unable to upload image."
       });
     }
   }
@@ -283,7 +266,6 @@ router.put("/", protect, adminOnly, async (req, res) => {
       });
     }
 
-    // Check section names.
     const invalidSections = Object.keys(updates).filter(
       key => !ALLOWED_SECTIONS.includes(key)
     );
@@ -303,7 +285,6 @@ router.put("/", protect, adminOnly, async (req, res) => {
       content = new SiteContent();
     }
 
-    // Save each supplied section.
     for (const section of Object.keys(updates)) {
       if (
         updates[section] === null ||
@@ -322,23 +303,19 @@ router.put("/", protect, adminOnly, async (req, res) => {
 
     await content.save();
 
-    const savedContent = await SiteContent.findById(
-      content._id
-    );
+    const savedContent = await SiteContent.findById(content._id);
 
     return res.status(200).json({
       success: true,
       message: "Website content saved successfully.",
       content: savedContent.toObject()
     });
-
   } catch (error) {
     console.error("CMS save error:", error);
 
     return res.status(500).json({
       success: false,
-      message:
-        error.message || "Unable to save website content."
+      message: error.message || "Unable to save website content."
     });
   }
 });
@@ -360,8 +337,7 @@ router.use((error, req, res, next) => {
   if (error) {
     return res.status(400).json({
       success: false,
-      message:
-        error.message || "Image upload failed."
+      message: error.message || "Image upload failed."
     });
   }
 
