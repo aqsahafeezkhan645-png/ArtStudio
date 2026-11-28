@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 import Order from "../models/order.js";
 import Product from "../models/Product.js";
-import StockReservation from "../models/stockReservation.js";
+import StockReservation from "../models/StockReservation.js";
 
 import {
   protect,
