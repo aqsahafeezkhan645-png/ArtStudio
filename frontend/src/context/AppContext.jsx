@@ -353,7 +353,7 @@ export function AppProvider({ children }) {
         image:
           customData.previewImage ||
           product.image ||
-          '/src/assets/images/birthday_card_craft_1794160682865.jpg',
+          '/images/birthday_card_craft_1794160682865.jpg',
         isCustom: true,
         customData
       };

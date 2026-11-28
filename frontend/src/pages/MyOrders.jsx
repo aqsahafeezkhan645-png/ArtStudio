@@ -113,7 +113,7 @@ export default function MyOrders() {
                   {order.items.map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
                       <img
-                        src={item.image || '/src/assets/images/birthday_card_craft_1794160682865.jpg'}
+                        src={item.image || '/images/birthday_card_craft_1794160682865.jpg'}
                         alt={item.name}
                         className="w-12 h-12 rounded-xl object-cover border border-[#E9DDF7] shrink-0"
                       />

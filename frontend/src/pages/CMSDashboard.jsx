@@ -124,15 +124,15 @@ const DEFAULT_HOME_GALLERY = [
 
 const DEFAULT_ABOUT_GALLERY = [
   {
-    image: "/src/assets/images/birthday_cards.jpg",
+    image: "/images/birthday_cards.jpg",
     alt: "Handcrafted birthday card collection",
   },
   {
-    image: "/src/assets/images/wedding_anniversary.jpg",
+    image: "/images/wedding_anniversary.jpg",
     alt: "Handcrafted wedding and anniversary cards",
   },
   {
-    image: "/src/assets/images/floral_gratitude.jpg",
+    image: "/images/floral_gratitude.jpg",
     alt: "Handcrafted floral gratitude cards",
   },
 ];
@@ -150,7 +150,7 @@ const DEFAULT_ABOUT = {
     "We believe a handmade card carries more than words. It carries thought, time, creativity, and love. Our goal is to help you share those feelings through beautifully designed keepsakes.",
 
   storyImage:
-    "/src/assets/images/hero_handmade_cards_1794160681532.jpg",
+    "/images/hero_handmade_cards_1794160681532.jpg",
 
   storyImageAlt:
     "Beautiful handmade cards created by ArtStudio",

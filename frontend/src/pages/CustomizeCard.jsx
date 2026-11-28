@@ -89,19 +89,19 @@ const DECORATIONS_CATALOG = [
 const SAMPLE_PHOTOS = [
   {
     name: 'Lavender Sprig',
-    url: '/src/assets/images/birthday_card_craft_1794160682865.jpg'
+    url: '/images/birthday_card_craft_1794160682865.jpg'
   },
   {
     name: 'Wedding Bouquet',
-    url: '/src/assets/images/wedding_anniversary_card_1794160683110.jpg'
+    url: '/images/wedding_anniversary_card_1794160683110.jpg'
   },
   {
     name: 'Pressed Pansies',
-    url: '/src/assets/images/floral_gratitude_card_1794160684123.jpg'
+    url: '/images/floral_gratitude_card_1794160684123.jpg'
   },
   {
     name: 'Atelier Keepsake',
-    url: '/src/assets/images/hero_handmade_cards_1794160681532.jpg'
+    url: '/images/hero_handmade_cards_1794160681532.jpg'
   }
 ];
 
@@ -159,7 +159,7 @@ export default function CustomizeCard() {
 
   // PICTURE / PHOTO OF YOUR DESIGN FEATURE STATE
   const [customPhotoUrl, setCustomPhotoUrl] = useState(
-    '/src/assets/images/birthday_card_craft_1794160682865.jpg'
+    '/images/birthday_card_craft_1794160682865.jpg'
   );
   const [photoFrameStyle, setPhotoFrameStyle] = useState('polaroid'); // 'polaroid', 'gold-deckled', 'cameo', 'minimal'
   const [photoLocation, setPhotoLocation] = useState('cover'); // 'cover', 'inside', 'both'
@@ -238,7 +238,7 @@ export default function CustomizeCard() {
     setIsBold(false);
     setIsItalic(false);
     setSelectedDecorations(['🌸', '💜', '🎀']);
-    setCustomPhotoUrl('/src/assets/images/birthday_card_craft_1794160682865.jpg');
+    setCustomPhotoUrl('/images/birthday_card_craft_1794160682865.jpg');
     setPhotoFrameStyle('polaroid');
     setPhotoLocation('cover');
     setPhotoCaption('Cherished Moments');
@@ -451,7 +451,7 @@ export default function CustomizeCard() {
         name: `Personalized Card: ${cardTitle}`,
         price: 950,
         discountPrice: 950,
-        image: customPhotoUrl || '/src/assets/images/birthday_card_craft_1794160682865.jpg'
+        image: customPhotoUrl || '/images/birthday_card_craft_1794160682865.jpg'
       },
       1,
       customData

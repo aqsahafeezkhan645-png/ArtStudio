@@ -6,7 +6,7 @@ import { randomUUID } from "crypto";
 import mongoose from "mongoose";
 
 import Product from "../models/Product.js";
-import StockReservation from "../models/StockReservation.js";
+import StockReservation from "../models/stockReservation.js";
 import cloudinary from "../config/cloudinary.js";
 import { protect, adminOnly } from "../middleware/authMiddleware.js";
 

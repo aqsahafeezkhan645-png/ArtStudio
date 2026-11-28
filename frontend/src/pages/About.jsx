@@ -19,7 +19,7 @@ const DEFAULT_ABOUT = {
   storyParagraph2:
     "Every card we produce starts with real dried botanicals—lavender buds, pressed pansies, and baby’s breath—hand-gathered and preserved in our studio. We bind every envelope with custom wax seals and lilac satin ribbons to ensure every recipient feels truly cherished.",
   storyImage:
-    "/src/assets/images/hero_handmade_cards_1794160681532.jpg",
+    "/images/hero_handmade_cards_1794160681532.jpg",
   storyImageAlt: "ArtStudio paper crafting table",
   imageCaptionTitle: "350 GSM Handcrafted Cotton",
   imageCaptionText:
@@ -32,15 +32,15 @@ const DEFAULT_ABOUT = {
   galleryTitle: "Gallery of Handcrafted Card Suites",
   galleryImages: [
     {
-      image: "/src/assets/images/birthday_card_craft_1794160682865.jpg",
+      image: "/images/birthday_card_craft_1794160682865.jpg",
       alt: "Handmade birthday card craft"
     },
     {
-      image: "/src/assets/images/wedding_anniversary_card_1794160683110.jpg",
+      image: "/images/wedding_anniversary_card_1794160683110.jpg",
       alt: "Handmade wedding card craft"
     },
     {
-      image: "/src/assets/images/floral_gratitude_card_1794160684123.jpg",
+      image: "/images/floral_gratitude_card_1794160684123.jpg",
       alt: "Handmade gratitude card craft"
     }
   ]

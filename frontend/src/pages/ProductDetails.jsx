@@ -45,8 +45,8 @@ export default function ProductDetails() {
   // Alternate images for the gallery
   const gallery = [
     card.image,
-    '/src/assets/images/hero_handmade_cards_1794160681532.jpg',
-    '/src/assets/images/floral_gratitude_card_1794160684123.jpg'
+    '/images/hero_handmade_cards_1794160681532.jpg',
+    '/images/floral_gratitude_card_1794160684123.jpg'
   ];
 
   const relatedProducts = products

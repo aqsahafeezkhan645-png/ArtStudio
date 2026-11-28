@@ -23,42 +23,42 @@ const DEFAULT_CATEGORIES = [
     title: 'Birthday Cards',
     category: 'Birthday',
     subtitle: 'Whimsical blooms & festive notes',
-    image: '/src/assets/images/birthday_card_craft_1794160682865.jpg',
+    image: '/images/birthday_card_craft_1794160682865.jpg',
     count: '14 Designs'
   },
   {
     title: 'Anniversary Cards',
     category: 'Anniversary',
     subtitle: 'Twin botanical bouquets & heartfelt vows',
-    image: '/src/assets/images/wedding_anniversary_card_1794160683110.jpg',
+    image: '/images/wedding_anniversary_card_1794160683110.jpg',
     count: '9 Designs'
   },
   {
     title: 'Wedding Cards',
     category: 'Wedding',
     subtitle: 'Embossed foil & dried florals',
-    image: '/src/assets/images/wedding_anniversary_card_1794160683110.jpg',
+    image: '/images/wedding_anniversary_card_1794160683110.jpg',
     count: '11 Designs'
   },
   {
     title: 'Love & Friendship',
     category: 'Friendship',
     subtitle: 'Kindred spirits & pure warmth',
-    image: '/src/assets/images/hero_handmade_cards_1794160681532.jpg',
+    image: '/images/hero_handmade_cards_1794160681532.jpg',
     count: '16 Designs'
   },
   {
     title: 'Thank You Cards',
     category: 'Thank You',
     subtitle: 'Pressed purple pansies & gratitude',
-    image: '/src/assets/images/floral_gratitude_card_1794160684123.jpg',
+    image: '/images/floral_gratitude_card_1794160684123.jpg',
     count: '8 Designs'
   },
   {
     title: 'Congratulations',
     category: 'Congratulations',
     subtitle: 'Golden blossoms for shining moments',
-    image: '/src/assets/images/floral_gratitude_card_1794160684123.jpg',
+    image: '/images/floral_gratitude_card_1794160684123.jpg',
     count: '10 Designs'
   }
 ];
@@ -118,19 +118,19 @@ const DEFAULT_WHY_CHOOSE = [
 
 const DEFAULT_GALLERY = [
   {
-    image: '/src/assets/images/birthday_card_craft_1794160682865.jpg',
+    image: '/images/birthday_card_craft_1794160682865.jpg',
     alt: 'ArtStudio birthday card'
   },
   {
-    image: '/src/assets/images/wedding_anniversary_card_1794160683110.jpg',
+    image: '/images/wedding_anniversary_card_1794160683110.jpg',
     alt: 'ArtStudio wedding card'
   },
   {
-    image: '/src/assets/images/floral_gratitude_card_1794160684123.jpg',
+    image: '/images/floral_gratitude_card_1794160684123.jpg',
     alt: 'ArtStudio floral gratitude card'
   },
   {
-    image: '/src/assets/images/hero_handmade_cards_1794160681532.jpg',
+    image: '/images/hero_handmade_cards_1794160681532.jpg',
     alt: 'ArtStudio handmade cards'
   }
 ];
@@ -303,7 +303,7 @@ export default function Home() {
                 <img
                   src={
                     home.heroImage ||
-                    '/src/assets/images/hero_handmade_cards_1794160681532.jpg'
+                    '/images/hero_handmade_cards_1794160681532.jpg'
                   }
                   alt="Handcrafted lavender greeting cards"
                   className="w-full h-auto aspect-[4/3] object-cover"
@@ -373,7 +373,7 @@ export default function Home() {
             >
               <div className="aspect-[16/10] overflow-hidden bg-[#FAF7FD]">
                 <img
-                  src={cat.image || '/src/assets/images/hero_handmade_cards_1794160681532.jpg'}
+                  src={cat.image || '/images/hero_handmade_cards_1794160681532.jpg'}
                   alt={cat.title || 'ArtStudio category'}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
