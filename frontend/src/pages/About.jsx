@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -18,8 +17,7 @@ const DEFAULT_ABOUT = {
     "ArtStudio started with a simple belief: in a fast digital world of generic text messages, a physical, tactile card made from organic textured cotton paper carrying your own words holds immense warmth.",
   storyParagraph2:
     "Every card we produce starts with real dried botanicals—lavender buds, pressed pansies, and baby’s breath—hand-gathered and preserved in our studio. We bind every envelope with custom wax seals and lilac satin ribbons to ensure every recipient feels truly cherished.",
-  storyImage:
-    "/images/hero_handmade_cards_1794160681532.jpg",
+  storyImage: "/images/hero_handmade_cards_1794160681532.jpg",
   storyImageAlt: "ArtStudio paper crafting table",
   imageCaptionTitle: "350 GSM Handcrafted Cotton",
   imageCaptionText:
@@ -67,16 +65,38 @@ const DEFAULT_VALUES = [
   }
 ];
 
-function getImageUrl(item) {
-  if (!item) return "";
-  if (typeof item === "string") return item;
-  return item.image || item.url || item.src || "";
+// Normalize old local paths while preserving full Cloudinary/external URLs.
+function getImageUrl(item, fallback = "") {
+  if (!item) return fallback;
+
+  let image =
+    typeof item === "string"
+      ? item
+      : item.image || item.url || item.src || "";
+
+  if (!image || typeof image !== "string") return fallback;
+
+  image = image.trim();
+  if (!image) return fallback;
+
+  if (/^(https?:\/\/|data:|blob:)/i.test(image)) {
+    return image;
+  }
+
+  // Convert old Vite source paths to the public folder paths used in production.
+  image = image.replace(/^\/?src\/assets\/images\//i, "/images/");
+  image = image.replace(/^\/?public\//i, "/");
+
+  if (!image.startsWith("/")) {
+    image = `/${image}`;
+  }
+
+  return image;
 }
 
 export default function About() {
   const [about, setAbout] = useState(DEFAULT_ABOUT);
 
-  // Load saved About page content
   useEffect(() => {
     let mounted = true;
 
@@ -85,40 +105,49 @@ export default function About() {
         const response = await fetch(API);
 
         if (!response.ok) {
-          throw new Error("Unable to load About Us content.");
+          throw new Error(`Unable to load About Us content (${response.status}).`);
         }
 
         const data = await response.json();
         const savedContent = data.content || data;
         const savedAbout = savedContent.about || {};
 
-        if (mounted) {
-          setAbout({
-            ...DEFAULT_ABOUT,
-            ...savedAbout,
-            galleryImages: Array.from({ length: 3 }, (_, index) => {
-              const savedImage = savedAbout.galleryImages?.[index];
-              const defaultImage = DEFAULT_ABOUT.galleryImages[index];
+        if (!mounted) return;
 
-              if (!savedImage) return defaultImage;
+        const galleryImages = Array.from({ length: 3 }, (_, index) => {
+          const defaultImage = DEFAULT_ABOUT.galleryImages[index];
+          const savedImage = savedAbout.galleryImages?.[index];
 
-              if (typeof savedImage === "string") {
-                return {
-                  image: savedImage,
-                  alt: defaultImage.alt
-                };
-              }
+          if (!savedImage) return defaultImage;
 
-              return {
-                ...defaultImage,
-                ...savedImage,
-                image: getImageUrl(savedImage) || defaultImage.image
-              };
-            })
-          });
-        }
+          if (typeof savedImage === "string") {
+            return {
+              image: getImageUrl(savedImage, defaultImage.image),
+              alt: defaultImage.alt
+            };
+          }
+
+          return {
+            ...defaultImage,
+            ...savedImage,
+            image: getImageUrl(savedImage, defaultImage.image),
+            alt: savedImage.alt || defaultImage.alt
+          };
+        });
+
+        setAbout({
+          ...DEFAULT_ABOUT,
+          ...savedAbout,
+          // Always normalize the saved story image and retain a working fallback.
+          storyImage: getImageUrl(
+            savedAbout.storyImage,
+            DEFAULT_ABOUT.storyImage
+          ),
+          galleryImages
+        });
       } catch (error) {
         console.error("About page content error:", error);
+        // Keep DEFAULT_ABOUT visible if the API is unavailable.
       }
     }
 
@@ -129,7 +158,7 @@ export default function About() {
     };
   }, []);
 
-  // All colors come from the currently selected website theme
+  // All colors come from the currently selected website theme.
   const theme = {
     primary: "var(--theme-primary)",
     secondary: "var(--theme-secondary)",
@@ -142,17 +171,9 @@ export default function About() {
     card: "var(--theme-card, #ffffff)"
   };
 
-  const eyebrowStyle = {
-    color: theme.primary
-  };
-
-  const headingStyle = {
-    color: theme.secondary
-  };
-
-  const paragraphStyle = {
-    color: theme.muted
-  };
+  const eyebrowStyle = { color: theme.primary };
+  const headingStyle = { color: theme.secondary };
+  const paragraphStyle = { color: theme.muted };
 
   const cardStyle = {
     backgroundColor: theme.card,
@@ -170,6 +191,12 @@ export default function About() {
     backgroundColor: theme.card,
     borderColor: theme.light,
     color: theme.primary
+  };
+
+  const handleImageError = (event, fallback) => {
+    // Prevent an endless error loop if the fallback file is also missing.
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = fallback;
   };
 
   return (
@@ -235,10 +262,7 @@ export default function About() {
           >
             <Heart
               className="w-4 h-4"
-              style={{
-                color: theme.primary,
-                fill: theme.primary
-              }}
+              style={{ color: theme.primary, fill: theme.primary }}
             />
             <span>The ArtStudio Craft Story</span>
           </div>
@@ -273,7 +297,6 @@ export default function About() {
       {/* STORY AND PHILOSOPHY */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
           <div className="lg:col-span-6 space-y-5">
             <span
               className="text-xs font-semibold tracking-wider uppercase"
@@ -289,17 +312,11 @@ export default function About() {
               {about.storyTitle}
             </h2>
 
-            <p
-              className="text-sm leading-relaxed"
-              style={paragraphStyle}
-            >
+            <p className="text-sm leading-relaxed" style={paragraphStyle}>
               {about.storyParagraph1}
             </p>
 
-            <p
-              className="text-sm leading-relaxed"
-              style={paragraphStyle}
-            >
+            <p className="text-sm leading-relaxed" style={paragraphStyle}>
               {about.storyParagraph2}
             </p>
 
@@ -334,9 +351,13 @@ export default function About() {
               }}
             >
               <img
-                src={about.storyImage}
+                src={getImageUrl(about.storyImage, DEFAULT_ABOUT.storyImage)}
                 alt={about.storyImageAlt || "ArtStudio handmade cards"}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                onError={(event) =>
+                  handleImageError(event, DEFAULT_ABOUT.storyImage)
+                }
               />
             </div>
 
@@ -349,17 +370,11 @@ export default function About() {
                   "0 8px 25px color-mix(in srgb, var(--theme-primary) 15%, transparent)"
               }}
             >
-              <p
-                className="font-serif text-base font-bold"
-                style={eyebrowStyle}
-              >
+              <p className="font-serif text-base font-bold" style={eyebrowStyle}>
                 {about.imageCaptionTitle}
               </p>
 
-              <p
-                className="text-xs mt-1"
-                style={paragraphStyle}
-              >
+              <p className="text-xs mt-1" style={paragraphStyle}>
                 {about.imageCaptionText}
               </p>
             </div>
@@ -377,10 +392,7 @@ export default function About() {
             Our Guiding Values
           </span>
 
-          <h2
-            className="font-serif text-3xl font-bold"
-            style={headingStyle}
-          >
+          <h2 className="font-serif text-3xl font-bold" style={headingStyle}>
             The Art of Thoughtful Gifting
           </h2>
         </div>
@@ -405,17 +417,11 @@ export default function About() {
                   <Icon className="w-6 h-6" />
                 </div>
 
-                <h3
-                  className="font-serif text-lg font-bold"
-                  style={headingStyle}
-                >
+                <h3 className="font-serif text-lg font-bold" style={headingStyle}>
                   {item.title}
                 </h3>
 
-                <p
-                  className="text-xs leading-relaxed"
-                  style={paragraphStyle}
-                >
+                <p className="text-xs leading-relaxed" style={paragraphStyle}>
                   {item.description}
                 </p>
               </div>
@@ -434,32 +440,36 @@ export default function About() {
             {about.galleryEyebrow}
           </span>
 
-          <h2
-            className="font-serif text-3xl font-bold"
-            style={headingStyle}
-          >
+          <h2 className="font-serif text-3xl font-bold" style={headingStyle}>
             {about.galleryTitle}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {about.galleryImages.map((item, index) => (
-            <div
-              key={index}
-              className="about-theme-hover rounded-3xl overflow-hidden aspect-[4/3] border"
-              style={{
-                borderColor: theme.light,
-                boxShadow:
-                  "0 5px 16px color-mix(in srgb, var(--theme-primary) 10%, transparent)"
-              }}
-            >
-              <img
-                src={getImageUrl(item)}
-                alt={item.alt || `ArtStudio gallery image ${index + 1}`}
-                className="about-theme-image w-full h-full object-cover"
-              />
-            </div>
-          ))}
+          {about.galleryImages.map((item, index) => {
+            const fallbackImage = DEFAULT_ABOUT.galleryImages[index].image;
+            const imageUrl = getImageUrl(item, fallbackImage);
+
+            return (
+              <div
+                key={index}
+                className="about-theme-hover rounded-3xl overflow-hidden aspect-[4/3] border"
+                style={{
+                  borderColor: theme.light,
+                  boxShadow:
+                    "0 5px 16px color-mix(in srgb, var(--theme-primary) 10%, transparent)"
+                }}
+              >
+                <img
+                  src={imageUrl}
+                  alt={item.alt || `ArtStudio gallery image ${index + 1}`}
+                  className="about-theme-image w-full h-full object-cover"
+                  loading="lazy"
+                  onError={(event) => handleImageError(event, fallbackImage)}
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
     </div>
